@@ -53,8 +53,8 @@ resource "aws_instance" "app_server" {
   instance_type = var.instance_type
   subnet_id     = data.aws_subnet.app_a.id
   disable_api_termination = false
-   associate_public_ip_address = false
- key_name   = "lab-5-keypair"  # Attach SG
+  associate_public_ip_address = false
+  key_name   = "lab-5-keypair"  # Attach SG
   vpc_security_group_ids = [aws_security_group.app_sg.id]  
 
   # Root volume (20 GB gp2)
@@ -62,14 +62,7 @@ resource "aws_instance" "app_server" {
     volume_size = 35
     volume_type = "gp2"
   }
-  /*
-  # Additional EBS volume (20 GB gp2)
-  ebs_block_device {
-    device_name = "/dev/sdf"   # Linux convention, adjust if needed
-    volume_size = 30
-    volume_type = "gp2"
-  }
- */
+
  user_data = file("./userdata.sh")
 
   tags = merge(local.comman_tags, {
@@ -92,4 +85,19 @@ resource "aws_eip" "app_eip" {
 resource "aws_eip_association" "app_eip_assoc" {
   instance_id   = aws_instance.app_server.id
   allocation_id = aws_eip.app_eip.id
+}
+
+resource "aws_ebs_volume" "app_data_volume" {
+  availability_zone = data.aws_subnet.app_a.availability_zone
+  size              = 30
+  type              = "gp2"
+  tags = merge(local.comman_tags, {
+    Name = "${local.prefix}-app-data-volume"
+  })
+}
+
+resource "aws_volume_attachment" "app_data_volume_attachment" {
+  device_name = "/dev/sdf"
+  volume_id   = aws_ebs_volume.app_data_volume.id
+  instance_id = aws_instance.app_server.id
 }
