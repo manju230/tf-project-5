@@ -54,7 +54,7 @@ resource "aws_security_group" "app_sg_2" {
   }
 
   tags = merge(local.comman_tags, {
-    Name = "facebook-app-server-sg"
+    Name = "facebook-app-server-sg-2"
   })
 }
 
