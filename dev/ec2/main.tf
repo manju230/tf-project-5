@@ -70,6 +70,7 @@ resource "aws_instance" "app_server" {
   })
 }
 
+/*
 # -------------------
 # Elastic IP
 # -------------------
@@ -86,6 +87,7 @@ resource "aws_eip_association" "app_eip_assoc" {
   instance_id   = aws_instance.app_server.id
   allocation_id = aws_eip.app_eip.id
 }
+*/
 
 resource "aws_ebs_volume" "app_data_volume" {
   availability_zone = data.aws_subnet.app_a.availability_zone
