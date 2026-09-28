@@ -2,7 +2,7 @@
 # Security Group
 # -------------------
 resource "aws_security_group" "app_sg" {
-  name        = facebook-app-server-sg
+  name        = "facebook-app-server-sg"
   description = "Dedicated SG for App Server"
   vpc_id      = data.aws_vpc.main.id
 
@@ -41,7 +41,7 @@ resource "aws_security_group" "app_sg" {
   }
 
   tags = merge(local.comman_tags, {
-    Name = facebook-app-server-sg
+    Name = "facebook-app-server-sg"
   })
 }
 
