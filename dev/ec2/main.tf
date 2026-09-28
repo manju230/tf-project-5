@@ -14,6 +14,7 @@ resource "aws_security_group" "app_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   } 
+ 
 
   # Outbound: allow all
   egress {
@@ -28,6 +29,37 @@ resource "aws_security_group" "app_sg" {
   })
 }
 
+
+
+resource "aws_security_group" "app_sg_2" {
+  name        = "facebook-app-server-sg-2"
+  description = "Dedicated SG for App Server"
+  vpc_id      = data.aws_vpc.main.id
+
+  # Example: allow SSH from anywhere
+  ingress {
+    description = "https"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  } 
+
+  # Outbound: allow all
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(local.comman_tags, {
+    Name = "facebook-app-server-sg"
+  })
+}
+
+
+
 # -------------------
 # EC2 Instance
 # -------------------
@@ -38,7 +70,7 @@ resource "aws_instance" "app_server" {
   disable_api_termination = false
   associate_public_ip_address = false
   key_name   = "lab-5-keypair"  # Attach SG
-  vpc_security_group_ids = [aws_security_group.app_sg.id]  
+  vpc_security_group_ids = ["aws_security_group.app_sg.id", "aws_security_group.app_sg_2.id"]  
 
   # Root volume (20 GB gp2)
   root_block_device {
