@@ -29,8 +29,6 @@ resource "aws_security_group" "app_sg" {
   })
 }
 
-/*
-
 resource "aws_security_group" "app_sg_2" {
   name        = "facebook-app-server-sg-2"
   description = "Dedicated SG for App Server"
@@ -58,7 +56,6 @@ resource "aws_security_group" "app_sg_2" {
   })
 }
 
-*/
 
 # -------------------
 # EC2 Instance
@@ -70,7 +67,7 @@ resource "aws_instance" "app_server" {
   disable_api_termination = false
   associate_public_ip_address = false
   key_name   = "lab-5-keypair"  # Attach SG
-  vpc_security_group_ids = ["aws_security_group.app_sg.id"]  
+  vpc_security_group_ids = ["aws_security_group.app_sg.id", "aws_security_group.app_sg_2.id"]  
 
   # Root volume (20 GB gp2)
   root_block_device {
