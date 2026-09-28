@@ -114,7 +114,7 @@ resource "aws_ebs_volume" "app_ec2_volume" {
 }
 
 resource "aws_volume_attachment" "app_ec2_volume_attachment" {
-  device_name = "/dev/sdf"
+  device_name = "/dev/sdg"
   volume_id   = aws_ebs_volume.app_ec2_volume.id
   instance_id = aws_instance.app_server.id
 }
