@@ -73,7 +73,7 @@ resource "aws_instance" "app_server" {
  user_data = file("./userdata.sh")
 
   tags = merge(local.comman_tags, {
-    Name = "${local.prefix}-app-server"
+    Name = "facebook-app-server"
   })
 }
 
