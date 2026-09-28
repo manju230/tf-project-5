@@ -62,20 +62,21 @@ resource "aws_instance" "app_server" {
     volume_size = 35
     volume_type = "gp2"
   }
-/*
+  /*
   # Additional EBS volume (20 GB gp2)
   ebs_block_device {
     device_name = "/dev/sdf"   # Linux convention, adjust if needed
     volume_size = 30
     volume_type = "gp2"
   }
+ */
  user_data = file("./userdata.sh")
 
   tags = merge(local.comman_tags, {
     Name = "${local.prefix}-app-server"
   })
 }
-*/
+
 # -------------------
 # Elastic IP
 # -------------------
