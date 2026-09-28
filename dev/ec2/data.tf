@@ -33,20 +33,15 @@ data "aws_subnet" "app_c" {
 }
 
 
-data "aws_ami" "amazon-linux" {
+data "aws_ami" "amazon-windows" {
   most_recent = true
   owners      = ["amazon"]
   filter {
     name   = "name"
-    values = ["al2023-ami-*-x86_64"]
+    values = ["Windows_Server-2025-English-Full-Base-2026.08.12"]
   }
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
 }
-
-data "aws_iam_instance_profile" "ec2_profile_data" {
-  name = "ec2-profile-role"   # must match the actual profile name in AWS
-}
-
